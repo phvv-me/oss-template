@@ -1,0 +1,59 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+{% if primary_language == 'python' %}
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+{% if typecheck_command %}
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: typecheck
+        entry: {{ typecheck_command }}
+        language: system
+        pass_filenames: false
+{% endif %}
+{% elif primary_language == 'rust' %}
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt
+        language: system
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy
+        language: system
+        pass_filenames: false
+{% elif primary_language == 'javascript' %}
+{% if lint_command %}
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        entry: {{ lint_command }}
+        language: system
+        pass_filenames: false
+{% endif %}
+{% else %}
+{% if lint_command %}
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        entry: {{ lint_command }}
+        language: system
+        pass_filenames: false
+{% endif %}
+{% endif %}

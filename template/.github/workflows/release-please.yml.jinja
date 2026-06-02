@@ -1,0 +1,28 @@
+name: Release Please
+
+# Maintains a release PR and tags releases on merge, which triggers publish.yml.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
+{% if primary_language == 'python' %}
+          release-type: python
+{% elif primary_language == 'rust' %}
+          release-type: rust
+{% elif primary_language == 'javascript' %}
+          release-type: node
+{% else %}
+          release-type: simple
+{% endif %}

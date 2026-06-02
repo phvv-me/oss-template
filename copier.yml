@@ -8,6 +8,26 @@ _envops:
   lstrip_blocks: true
   keep_trailing_newline: true
 
+_message_after_copy: |
+  {{ project_name }} is ready.
+
+  Next steps:
+    1. cd into the project directory.
+  {% if install_command %}
+    2. Install dependencies: {{ install_command }}
+  {% endif %}
+    3. Initialize git if needed: git init && git add -A && git commit -m "chore: initial commit"
+    4. Create the GitHub repo {{ github_owner }}/{{ repository_name }} and push.
+    5. Enable GitHub Pages (Settings -> Pages -> Source: GitHub Actions) to serve docs at {{ docs_url }}.
+  {% if publish_target == 'pypi' %}
+    6. Configure PyPI Trusted Publishing for the `pypi` environment so publish.yml can release without tokens.
+  {% elif publish_target == 'npm' %}
+    6. Add an `NPM_TOKEN` secret for the `npm` environment so publish.yml can release.
+  {% elif publish_target == 'crates' %}
+    6. Add a `CARGO_REGISTRY_TOKEN` secret for the `crates` environment so publish.yml can release.
+  {% endif %}
+    7. Install hooks: pre-commit install
+
 project_name:
   type: str
   help: Human-readable project name.
@@ -66,10 +86,11 @@ author_email:
 
 license_spdx:
   type: str
-  help: SPDX license identifier. The bundled license text currently supports MIT.
+  help: SPDX license identifier. Bundled license text supports Apache-2.0 and MIT.
   choices:
+    - Apache-2.0
     - MIT
-  default: MIT
+  default: Apache-2.0
 
 docs_url:
   type: str
