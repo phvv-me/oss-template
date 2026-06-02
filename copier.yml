@@ -1,6 +1,6 @@
 _min_copier_version: "9.0"
 _subdirectory: template
-_templates_suffix: .jinja
+_templates_suffix: .j2
 _answers_file: .copier-answers.yml
 
 _envops:
@@ -13,19 +13,11 @@ _message_after_copy: |
 
   Next steps:
     1. cd into the project directory.
-  {% if install_command %}
-    2. Install dependencies: {{ install_command }}
-  {% endif %}
+    2. Install dependencies: uv sync --extra dev --extra docs
     3. Initialize git if needed: git init && git add -A && git commit -m "chore: initial commit"
     4. Create the GitHub repo {{ github_owner }}/{{ repository_name }} and push.
     5. Enable GitHub Pages (Settings -> Pages -> Source: GitHub Actions) to serve docs at {{ docs_url }}.
-  {% if publish_target == 'pypi' %}
     6. Configure PyPI Trusted Publishing for the `pypi` environment so publish.yml can release without tokens.
-  {% elif publish_target == 'npm' %}
-    6. Add an `NPM_TOKEN` secret for the `npm` environment so publish.yml can release.
-  {% elif publish_target == 'crates' %}
-    6. Add a `CARGO_REGISTRY_TOKEN` secret for the `crates` environment so publish.yml can release.
-  {% endif %}
     7. Install hooks: pre-commit install
 
 project_name:
@@ -36,186 +28,77 @@ description:
   type: str
   help: One sentence explaining the user problem this project solves.
 
-primary_language:
-  type: str
-  help: Main implementation language.
-  choices:
-    - python
-    - rust
-    - javascript
-    - generic
-  default: python
-
-project_slug:
-  type: str
-  help: Repository slug.
-  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
-
-package_name:
-  type: str
-  help: Published package name.
-  default: "{{ project_slug }}"
-
-module_name:
-  type: str
-  help: Python import name, ignored by non-Python projects.
-  default: "{{ package_name | replace('-', '_') }}"
-
 cli_command:
   type: str
   help: Main CLI command, or empty if the project has no CLI.
   default: "{{ project_slug }}"
 
-github_owner:
+project_slug:
   type: str
-  help: GitHub organization or username.
-  default: phvv-me
+  when: false
+  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
+
+package_name:
+  type: str
+  when: false
+  default: "{{ project_slug }}"
+
+module_name:
+  type: str
+  when: false
+  default: "{{ package_name | replace('-', '_') }}"
 
 repository_name:
   type: str
-  help: GitHub repository name.
+  when: false
   default: "{{ project_slug }}"
+
+github_owner:
+  type: str
+  when: false
+  default: phvv-me
 
 author_name:
   type: str
+  when: false
   default: Pedro Valois
 
 author_email:
   type: str
+  when: false
   default: contact@phvv.me
 
 license_spdx:
   type: str
-  help: SPDX license identifier. Bundled license text supports Apache-2.0 and MIT.
-  choices:
-    - Apache-2.0
-    - MIT
+  when: false
   default: Apache-2.0
+
+min_python:
+  type: str
+  when: false
+  default: "3.13"
+
+accent_color:
+  type: str
+  when: false
+  default: amber
 
 docs_url:
   type: str
-  help: Public documentation URL.
+  when: false
   default: "https://phvv.me/{{ repository_name }}"
 
 homepage_url:
   type: str
-  help: Public homepage URL.
+  when: false
   default: "{{ docs_url }}"
-
-ci_os:
-  type: str
-  help: GitHub Actions runner matrix, as YAML list items without brackets.
-  default: "ubuntu-latest, macos-latest"
 
 python_versions:
   type: str
-  help: Python version matrix, as YAML list items without brackets.
+  when: false
   default: '"3.13", "3.14"'
 
-node_versions:
+ci_os:
   type: str
-  help: Node version matrix, as YAML list items without brackets.
-  default: '"22", "24"'
-
-rust_toolchains:
-  type: str
-  help: Rust toolchain matrix, as YAML list items without brackets.
-  default: stable
-
-install_command:
-  type: str
-  help: Command that installs development dependencies in CI.
-  default: >-
-    {%- if primary_language == 'python' -%}
-    uv sync --extra dev --extra docs
-    {%- elif primary_language == 'rust' -%}
-    cargo fetch
-    {%- elif primary_language == 'javascript' -%}
-    corepack enable && pnpm install --frozen-lockfile
-    {%- else -%}
-
-    {%- endif -%}
-
-lint_command:
-  type: str
-  help: Command that checks formatting and linting.
-  default: >-
-    {%- if primary_language == 'python' -%}
-    uv run ruff check . && uv run ruff format --check .
-    {%- elif primary_language == 'rust' -%}
-    cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings
-    {%- elif primary_language == 'javascript' -%}
-    pnpm lint
-    {%- else -%}
-
-    {%- endif -%}
-
-typecheck_command:
-  type: str
-  help: Optional static type check command.
-  default: >-
-    {%- if primary_language == 'python' -%}
-    uv run pyrefly check
-    {%- elif primary_language == 'javascript' -%}
-    pnpm typecheck
-    {%- else -%}
-
-    {%- endif -%}
-
-test_command:
-  type: str
-  help: Command that runs tests.
-  default: >-
-    {%- if primary_language == 'python' -%}
-    uv run pytest -q
-    {%- elif primary_language == 'rust' -%}
-    cargo test --locked
-    {%- elif primary_language == 'javascript' -%}
-    pnpm test
-    {%- else -%}
-
-    {%- endif -%}
-
-build_command:
-  type: str
-  help: Command that builds the project or release artifact.
-  default: >-
-    {%- if primary_language == 'python' -%}
-    uv build
-    {%- elif primary_language == 'rust' -%}
-    cargo build --locked --release
-    {%- elif primary_language == 'javascript' -%}
-    pnpm build
-    {%- else -%}
-
-    {%- endif -%}
-
-docs_build_command:
-  type: str
-  help: Command that builds documentation into `site/`.
-  default: uvx --with mkdocs-material --with mkdocs-llmstxt mkdocs build -d site
-
-publish_target:
-  type: str
-  help: Release target used by `.github/workflows/publish.yml`.
-  choices:
-    - pypi
-    - crates
-    - npm
-    - generic
-    - none
-  default: >-
-    {%- if primary_language == 'python' -%}
-    pypi
-    {%- elif primary_language == 'rust' -%}
-    crates
-    {%- elif primary_language == 'javascript' -%}
-    npm
-    {%- else -%}
-    none
-    {%- endif -%}
-
-publish_command:
-  type: str
-  help: Command used only when `publish_target` is `generic`.
-  default: ""
+  when: false
+  default: "ubuntu-latest, macos-latest"

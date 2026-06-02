@@ -1,0 +1,18 @@
+from cyclopts import App
+
+app = App(name="{{ cli_command }}", help="{{ description }}")
+
+
+@app.command
+def hello(name: str = "world") -> str:
+    """Greet someone.
+
+    name: who to greet.
+    """
+    greeting = f"Hello, {name}!"
+    print(greeting)
+    return greeting
+
+
+if __name__ == "__main__":
+    app()

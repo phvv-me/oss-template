@@ -17,12 +17,4 @@ jobs:
       - uses: googleapis/release-please-action@v4
         with:
           token: {{ "${{ secrets.GITHUB_TOKEN }}" }}
-{% if primary_language == 'python' %}
           release-type: python
-{% elif primary_language == 'rust' %}
-          release-type: rust
-{% elif primary_language == 'javascript' %}
-          release-type: node
-{% else %}
-          release-type: simple
-{% endif %}

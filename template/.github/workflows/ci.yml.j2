@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: {{ "${{ matrix.os }}" }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [{{ ci_os }}]
+        python: [{{ python_versions }}]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: {{ "${{ matrix.python }}" }}
+          enable-cache: true
+      - name: Install
+        run: uv sync --extra dev --extra docs
+      - name: Lint
+        run: uv run ruff check . && uv run ruff format --check .
+      - name: Typecheck
+        run: uv run pyrefly check && uv run mypy src
+      - name: Test
+        run: uv run pytest -q
+      - name: Build
+        run: uv build

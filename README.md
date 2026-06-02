@@ -1,8 +1,8 @@
 ## OSS Template
 
-Reusable Copier template for small, public software projects under `phvv-me`.
+Reusable Copier template for small, public Python projects under `phvv-me`.
 
-The template keeps the productization surface shared across projects while letting each repo provide language-specific commands. It is meant for projects like Maquina and Chefe, where CI, docs, release, changelog, badges, CodeRabbit, Dependabot, and LLM-facing files should stay almost identical.
+The template bakes one fixed toolchain (uv, ruff, pyrefly, mypy strict, pytest, mkdocs-material) so every repo shares the same CI, docs, release, changelog, badges, CodeRabbit, Dependabot, and LLM-facing files. It is meant for projects like Maquina and Chefe, where the productization surface should stay almost identical.
 
 ## Use
 
@@ -28,13 +28,13 @@ Copier stores answers in `.copier-answers.yml`, then uses them for future three-
 
 ## Shape
 
-- Common files: README, changelog, license, docs, `llms.txt`, GitHub workflows, Dependabot, CodeRabbit, security, contributing, and agent instructions.
-- Language adaptation: Python, Rust, JavaScript, or generic projects differ mainly by setup and command variables.
-- Publish adaptation: PyPI, crates.io, npm, generic publish command, or no publish target.
-- Package manifests stay language-native. Add or keep `pyproject.toml`, `Cargo.toml`, or `package.json` in each project instead of forcing one cross-language abstraction.
+- Three prompts only: `project_name`, `description`, and `cli_command` (leave blank for a library with no CLI).
+- Everything else is a silent, baked default (owner, license Apache-2.0, min Python 3.13, docs accent, CI matrix, version matrix). Override any of them with `--data` when needed.
+- Python only. Each project gets a full `pyproject.toml` plus the shared tooling (ruff, mypy strict, pyrefly, pytest, coverage) and a green skeleton out of the box.
+- Publishing is PyPI Trusted Publishing via the `pypi` environment.
 
 ## Local Test
 
 ```sh
-uvx copier copy oss-template /tmp/example --defaults --data project_name=Example --data description="Example project" --data primary_language=python --data publish_target=pypi
+uvx copier copy oss-template /tmp/example --defaults --data project_name=Example --data description="Example project" --data cli_command=example
 ```

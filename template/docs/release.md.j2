@@ -12,8 +12,8 @@ Releases are cut from version tags.
 
 ## Commands
 
-{% if lint_command %}- Lint: `{{ lint_command }}`
-{% endif %}{% if typecheck_command %}- Typecheck: `{{ typecheck_command }}`
-{% endif %}{% if test_command %}- Test: `{{ test_command }}`
-{% endif %}{% if build_command %}- Build: `{{ build_command }}`
-{% endif %}
+- Lint: `uv run ruff check . && uv run ruff format --check .`
+- Typecheck: `uv run pyrefly check && uv run mypy src`
+- Test: `uv run pytest -q`
+- Build: `uv build`
+

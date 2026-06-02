@@ -16,14 +16,14 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: black
-      accent: blue
+      accent: {{ accent_color }}
       toggle:
         icon: material/weather-night
         name: Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
-      accent: blue
+      accent: {{ accent_color }}
       toggle:
         icon: material/weather-sunny
         name: Light mode
@@ -34,6 +34,9 @@ theme:
     - content.code.copy
     - content.code.annotate
     - toc.integrate
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - Home: index.md

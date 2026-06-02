@@ -1,0 +1,14 @@
+import {{ module_name }}
+{% if cli_command %}
+from {{ module_name }}.cli import hello
+{% endif %}
+
+
+def test_package_imports() -> None:
+    assert {{ module_name }}.NAME == "{{ module_name }}"
+{% if cli_command %}
+
+
+def test_cli_hello_greets() -> None:
+    assert hello("there") == "Hello, there!"
+{% endif %}

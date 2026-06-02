@@ -1,0 +1,55 @@
+/* Brand layer, keeps Material from looking stock.
+   Space Grotesk headings, an accent seam under the black header, card hover. */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap");
+
+:root {
+  --brand-accent: {% if accent_color == 'blue' %}#2563eb{% else %}#eab308{% endif %};
+  --md-accent-fg-color: var(--brand-accent);
+}
+
+[data-md-color-accent="{{ accent_color }}"] {
+  --md-accent-fg-color: var(--brand-accent);
+}
+
+/* sharp, slightly tightened headings */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-header__title,
+.md-nav__title {
+  font-family: "Space Grotesk", var(--md-text-font-family), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h1 {
+  font-weight: 700;
+}
+
+/* an accent seam under the black header, the brand cue */
+.md-header {
+  border-bottom: 2px solid var(--brand-accent);
+}
+
+/* tabs: accent underline on the active page */
+.md-tabs__link--active {
+  color: var(--brand-accent);
+  opacity: 1;
+}
+
+/* softer corners on code + cards for a less boxy, more modern feel */
+.md-typeset pre > code,
+.md-typeset .grid.cards > ul > li {
+  border-radius: 10px;
+}
+
+.md-typeset .grid.cards > ul > li {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  transition: border-color 120ms, box-shadow 120ms;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--brand-accent);
+  box-shadow: 0 0 0 1px var(--brand-accent);
+}

@@ -4,23 +4,9 @@
 
 ## Install
 
-{% if primary_language == 'python' %}
 ```sh
 pip install {{ package_name }}
 ```
-{% elif primary_language == 'rust' %}
-```sh
-cargo install {{ package_name }}
-```
-{% elif primary_language == 'javascript' %}
-```sh
-pnpm add {{ package_name }}
-```
-{% else %}
-```sh
-{{ install_command or '# Add install command.' }}
-```
-{% endif %}
 
 ## Use
 
