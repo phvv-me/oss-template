@@ -20,9 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - name: Install chefe
+        run: curl -fsSL https://phvv.me/chefe/install.sh | sh
       - name: Build docs
-        run: uvx --with mkdocs-material --with mkdocs-llmstxt mkdocs build -d site
+        run: chefe install && chefe run docs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

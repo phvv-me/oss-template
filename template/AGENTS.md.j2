@@ -12,10 +12,12 @@
 
 ## Commands
 
-- Install: `uv sync --extra dev --extra docs`
-- Lint: `uv run ruff check . && uv run ruff format --check .`
-- Typecheck: `uv run pyrefly check && uv run mypy src`
-- Test: `uv run pytest -q`
+The dev environment is managed by [chefe](https://phvv.me/chefe), which compiles `chefe.toml` and runs the real tools.
+
+- Install: `chefe install`
+- Lint: `chefe run lint`
+- Typecheck: `chefe run typecheck`
+- Test: `chefe run test`
+- Docs: `chefe run docs`
 - Build: `uv build`
-- Docs: `uvx --with mkdocs-material --with mkdocs-llmstxt mkdocs build -d site`
 

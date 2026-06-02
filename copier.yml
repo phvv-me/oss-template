@@ -13,7 +13,7 @@ _message_after_copy: |
 
   Next steps:
     1. cd into the project directory.
-    2. Install dependencies: uv sync --extra dev --extra docs
+    2. Install dependencies: chefe install
     3. Initialize git if needed: git init && git add -A && git commit -m "chore: initial commit"
     4. Create the GitHub repo {{ github_owner }}/{{ repository_name }} and push.
     5. Enable GitHub Pages (Settings -> Pages -> Source: GitHub Actions) to serve docs at {{ docs_url }}.

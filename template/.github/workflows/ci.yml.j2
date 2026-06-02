@@ -12,20 +12,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [{{ ci_os }}]
-        python: [{{ python_versions }}]
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: {{ "${{ matrix.python }}" }}
-          enable-cache: true
-      - name: Install
-        run: uv sync --extra dev --extra docs
+      - name: Install chefe
+        run: curl -fsSL https://phvv.me/chefe/install.sh | sh
+      - name: Provision
+        run: chefe install
       - name: Lint
-        run: uv run ruff check . && uv run ruff format --check .
+        run: chefe run lint
       - name: Typecheck
-        run: uv run pyrefly check && uv run mypy src
+        run: chefe run typecheck
       - name: Test
-        run: uv run pytest -q
-      - name: Build
-        run: uv build
+        run: chefe run test

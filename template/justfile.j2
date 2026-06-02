@@ -2,19 +2,19 @@ default:
     @just --list
 
 install:
-    uv sync --extra dev --extra docs
+    chefe install
 
 lint:
-    uv run ruff check . && uv run ruff format --check .
+    chefe run lint
 
 typecheck:
-    uv run pyrefly check && uv run mypy src
+    chefe run typecheck
 
 test:
-    uv run pytest -q
+    chefe run test
 
 build:
     uv build
 
 docs:
-    uvx --with mkdocs-material --with mkdocs-llmstxt mkdocs build -d site
+    chefe run docs
