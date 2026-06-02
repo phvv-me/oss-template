@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+{% if primary_language == 'python' %}
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+{% elif primary_language == 'rust' %}
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+{% elif primary_language == 'javascript' %}
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+{% endif %}

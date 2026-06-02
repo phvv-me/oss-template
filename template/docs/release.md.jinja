@@ -1,0 +1,19 @@
+# Release
+
+Releases are cut from version tags.
+
+## Checklist
+
+1. Update `CHANGELOG.md`.
+2. Run the local checks.
+3. Push a version tag like `v0.1.0`.
+4. Let `.github/workflows/publish.yml` build and publish artifacts.
+5. Verify the package page and docs site.
+
+## Commands
+
+{% if lint_command %}- Lint: `{{ lint_command }}`
+{% endif %}{% if typecheck_command %}- Typecheck: `{{ typecheck_command }}`
+{% endif %}{% if test_command %}- Test: `{{ test_command }}`
+{% endif %}{% if build_command %}- Build: `{{ build_command }}`
+{% endif %}

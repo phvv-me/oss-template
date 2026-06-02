@@ -1,0 +1,41 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Install
+
+{% if primary_language == 'python' %}
+```sh
+pip install {{ package_name }}
+```
+{% elif primary_language == 'rust' %}
+```sh
+cargo install {{ package_name }}
+```
+{% elif primary_language == 'javascript' %}
+```sh
+pnpm add {{ package_name }}
+```
+{% else %}
+```sh
+{{ install_command or '# Add install command.' }}
+```
+{% endif %}
+
+## Use
+
+{% if cli_command %}
+```sh
+{{ cli_command }} --help
+```
+{% endif %}
+
+## Project Files
+
+| file | purpose |
+|---|---|
+| `README.md` | user problem, install, first use |
+| `CHANGELOG.md` | release notes and user-visible changes |
+| `docs/` | durable documentation |
+| `llms.txt` | curated entry points for LLM-assisted use |
+| `.github/workflows/` | CI, docs deploy, and tag-based publish |

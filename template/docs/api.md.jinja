@@ -1,0 +1,17 @@
+# API
+
+This page is the stable public API map for {{ project_name }}.
+
+## Public Surface
+
+Document the names users should import or call. Keep internal modules out of this page.
+
+{% if primary_language == 'python' %}
+```python
+import {{ module_name }}
+```
+{% elif cli_command %}
+```sh
+{{ cli_command }} --help
+```
+{% endif %}

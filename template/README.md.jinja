@@ -1,0 +1,63 @@
+# {{ project_name }}
+
+[![CI](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-{{ docs_url | replace('https://', '') | replace('/', '%2F') }}-2563EB)]({{ docs_url }})
+[![License](https://img.shields.io/badge/license-{{ license_spdx }}-blue.svg)](LICENSE)
+
+{{ description }}
+
+## Install
+
+{% if primary_language == 'python' %}
+```sh
+pip install {{ package_name }}
+```
+{% if cli_command %}
+For a persistent CLI install:
+
+```sh
+uv tool install {{ package_name }}
+```
+{% endif %}
+{% elif primary_language == 'rust' %}
+```sh
+cargo install {{ package_name }}
+```
+{% elif primary_language == 'javascript' %}
+```sh
+pnpm add {{ package_name }}
+```
+{% else %}
+```sh
+{{ install_command or '# Add install command in .copier-answers.yml and rerun copier update.' }}
+```
+{% endif %}
+
+## Use
+
+{% if cli_command %}
+```sh
+{{ cli_command }} --help
+```
+{% endif %}
+{% if primary_language == 'python' %}
+```python
+import {{ module_name }}
+```
+{% endif %}
+
+## Documentation
+
+Full documentation lives at [{{ docs_url }}]({{ docs_url }}).
+
+For LLM-assisted use, start with [`llms.txt`](llms.txt).
+
+## Development
+
+{% if install_command %}- Install: `{{ install_command }}`
+{% endif %}{% if lint_command %}- Lint: `{{ lint_command }}`
+{% endif %}{% if typecheck_command %}- Typecheck: `{{ typecheck_command }}`
+{% endif %}{% if test_command %}- Test: `{{ test_command }}`
+{% endif %}{% if build_command %}- Build: `{{ build_command }}`
+{% endif %}{% if docs_build_command %}- Docs: `{{ docs_build_command }}`
+{% endif %}

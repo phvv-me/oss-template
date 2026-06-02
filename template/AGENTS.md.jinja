@@ -1,0 +1,21 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Working Rules
+
+- Keep the public surface small and documented.
+- Prefer one boring command per task: install, lint, typecheck, test, build, docs, publish.
+- Update `README.md`, `CHANGELOG.md`, `docs/`, and `llms.txt` when behavior changes.
+- Do not add stack details to the README unless users need them to install or run the project.
+- Do not commit, tag, publish, or push unless explicitly asked.
+
+## Commands
+
+{% if install_command %}- Install: `{{ install_command }}`
+{% endif %}{% if lint_command %}- Lint: `{{ lint_command }}`
+{% endif %}{% if typecheck_command %}- Typecheck: `{{ typecheck_command }}`
+{% endif %}{% if test_command %}- Test: `{{ test_command }}`
+{% endif %}{% if build_command %}- Build: `{{ build_command }}`
+{% endif %}{% if docs_build_command %}- Docs: `{{ docs_build_command }}`
+{% endif %}

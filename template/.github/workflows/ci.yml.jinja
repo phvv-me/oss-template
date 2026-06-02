@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: {{ "${{ matrix.os }}" }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [{{ ci_os }}]
+{% if primary_language == 'python' %}
+        python: [{{ python_versions }}]
+{% elif primary_language == 'javascript' %}
+        node: [{{ node_versions }}]
+{% elif primary_language == 'rust' %}
+        rust: [{{ rust_toolchains }}]
+{% endif %}
+    steps:
+      - uses: actions/checkout@v4
+{% if primary_language == 'python' %}
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: {{ "${{ matrix.python }}" }}
+          enable-cache: true
+{% elif primary_language == 'rust' %}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: {{ "${{ matrix.rust }}" }}
+      - uses: Swatinem/rust-cache@v2
+{% elif primary_language == 'javascript' %}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: {{ "${{ matrix.node }}" }}
+          cache: pnpm
+{% endif %}
+{% if install_command %}
+      - name: Install
+        run: |
+{{ install_command | indent(10, true) }}
+{% endif %}
+{% if lint_command %}
+      - name: Lint
+        run: |
+{{ lint_command | indent(10, true) }}
+{% endif %}
+{% if typecheck_command %}
+      - name: Typecheck
+        run: |
+{{ typecheck_command | indent(10, true) }}
+{% endif %}
+{% if test_command %}
+      - name: Test
+        run: |
+{{ test_command | indent(10, true) }}
+{% endif %}
+{% if build_command %}
+      - name: Build
+        run: |
+{{ build_command | indent(10, true) }}
+{% endif %}

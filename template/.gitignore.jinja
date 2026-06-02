@@ -1,0 +1,38 @@
+# system
+.DS_Store
+
+# editors
+.idea/
+.vscode/
+
+# logs
+*.log
+
+# docs
+site/
+
+# generated
+dist/
+build/
+{% if primary_language == 'python' %}
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/
+.pytest_cache/
+.pyrefly/
+*.egg-info/
+{% elif primary_language == 'rust' %}
+
+# rust
+target/
+{% elif primary_language == 'javascript' %}
+
+# javascript
+node_modules/
+.turbo/
+.next/
+coverage/
+{% endif %}
