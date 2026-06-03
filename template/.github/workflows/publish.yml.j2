@@ -1,18 +1,29 @@
 name: Publish
 
+# The publish job runs only if the test gate passes, so a release never ships a broken build.
 on:
   push:
     tags: ["v*.*.*"]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  id-token: write
-
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install chefe
+      - run: chefe install
+      - run: chefe run lint
+      - run: chefe run typecheck
+      - run: chefe run test
+
   publish:
+    needs: test
     runs-on: ubuntu-latest
     environment: pypi
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

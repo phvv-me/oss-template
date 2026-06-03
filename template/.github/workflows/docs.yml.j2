@@ -1,9 +1,11 @@
 name: Docs
 
+# Deploys only after CI succeeds on main, so a failing CI never ships docs.
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
-    paths: ["docs/**", "mkdocs.yml", "README.md", "llms.txt", ".github/workflows/docs.yml"]
   workflow_dispatch:
 
 permissions:
@@ -17,11 +19,12 @@ concurrency:
 
 jobs:
   build:
+    if: {{ "${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}" }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install chefe
-        run: curl -fsSL https://phvv.me/chefe/install.sh | sh
+        run: pip install chefe
       - name: Build docs
         run: chefe install && chefe run docs
       - uses: actions/upload-pages-artifact@v3

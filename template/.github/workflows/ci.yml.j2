@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install chefe
-        run: curl -fsSL https://phvv.me/chefe/install.sh | sh
+        run: pip install chefe
       - name: Provision
         run: chefe install
       - name: Lint
