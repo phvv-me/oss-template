@@ -5,21 +5,22 @@ on:
   workflow_call: # publish.yml runs this exact gate on main before publishing
 
 jobs:
-  check:
+  test:
     runs-on: {{ "${{ matrix.os }}" }}
     strategy:
       fail-fast: false
       matrix:
         os: [{{ ci_os }}]
+        python: [{{ python_versions }}]
     steps:
-      - uses: actions/checkout@v4
-      - name: Install chefe
-        run: pip install chefe
-      - name: Provision
-        run: chefe install
-      - name: Lint
-        run: chefe run lint
-      - name: Typecheck
-        run: chefe run typecheck
-      - name: Test
-        run: chefe run test
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: {{ "${{ matrix.python }}" }}
+          enable-cache: true
+      - run: uv sync --extra dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy src
+      - run: uv run pyrefly check
+      - run: uv run pytest -q

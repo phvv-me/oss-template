@@ -1,8 +1,15 @@
+{% set accents = {
+  'amber': {'primary': '#f59e0b', 'dark': '#d97706', 'accent': '#f59e0b'},
+  'blue': {'primary': '#2563eb', 'dark': '#1d4ed8', 'accent': '#2563eb'},
+  'teal': {'primary': '#14b8a6', 'dark': '#0f766e', 'accent': '#14b8a6'},
+  'green': {'primary': '#10b981', 'dark': '#047857', 'accent': '#10b981'},
+} %}
+{% set brand = accents.get(accent_color, accents['amber']) %}
 /* {{ project_name }} accent. Loads after base.css, sets only the
    --brand-* hooks. The shared base maps them onto Material. */
 
 :root {
-  --brand-primary: {% if accent_color == 'blue' %}#2563eb{% else %}#d97706{% endif %};
-  --brand-primary-dark: {% if accent_color == 'blue' %}#1d4ed8{% else %}#b45309{% endif %};
-  --brand-accent: {% if accent_color == 'blue' %}#2563eb{% else %}#f59e0b{% endif %};
+  --brand-primary: {{ brand['primary'] }};
+  --brand-primary-dark: {{ brand['dark'] }};
+  --brand-accent: {{ brand['accent'] }};
 }

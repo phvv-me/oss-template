@@ -4,9 +4,9 @@ Thanks for helping improve {{ project_name }}.
 
 ## Before a Pull Request
 
-- Install dependencies with `chefe install`.
-- Run `chefe run lint`.
-- Run `chefe run typecheck`.
-- Run `chefe run test`.
+- Install dependencies with `uv sync --extra dev`.
+- Run `uv run ruff check . && uv run ruff format --check .`.
+- Run `uv run mypy src && uv run pyrefly check`.
+- Run `uv run pytest -q`.
 
 Keep changes focused. If the change affects users, update `README.md`, `docs/`, and `CHANGELOG.md`.

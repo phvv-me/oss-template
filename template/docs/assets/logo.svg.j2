@@ -1,8 +1,10 @@
+{% set strokes = {'amber': '#eab308', 'blue': '#2563eb', 'teal': '#0d9488', 'green': '#059669'} %}
+{% set stroke = strokes.get(accent_color, strokes['amber']) %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
   <title>{{ project_name }}</title>
   <rect x="7" y="7" width="86" height="86" rx="20"
-        stroke="{% if accent_color == 'blue' %}#2563eb{% else %}#eab308{% endif %}" stroke-width="6"/>
+        stroke="{{ stroke }}" stroke-width="6"/>
   <text x="50" y="54" text-anchor="middle" dominant-baseline="central"
         font-family="'Space Grotesk', system-ui, sans-serif" font-weight="700" font-size="46"
-        fill="{% if accent_color == 'blue' %}#2563eb{% else %}#eab308{% endif %}">{{ project_name[0] | upper }}</text>
+        fill="{{ stroke }}">{{ project_name[0] | upper }}</text>
 </svg>

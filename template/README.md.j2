@@ -1,8 +1,17 @@
-# {{ project_name }}
+{% set badge_colors = {'amber': 'EAB308', 'blue': '2563EB', 'teal': '0D9488', 'green': '15803D'} %}
+{% set docs_badge_color = badge_colors.get(accent_color, badge_colors['amber']) %}
+<div align="center">
+
+<!-- [![{{ package_name }} banner](https://raw.githubusercontent.com/{{ github_owner }}/{{ repository_name }}/main/docs/assets/banner.png)]({{ docs_url }}) -->
 
 [![CI](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-{{ docs_url | replace('https://', '') | replace('/', '%2F') }}-2563EB)]({{ docs_url }})
-[![License](https://img.shields.io/badge/license-{{ license_spdx | replace('-', '--') }}-blue.svg)](LICENSE)
+[![Publish](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/publish.yml/badge.svg)](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/publish.yml)
+[![PyPI](https://img.shields.io/pypi/v/{{ package_name }})](https://pypi.org/project/{{ package_name }}/)
+[![Python](https://img.shields.io/pypi/pyversions/{{ package_name }})](https://pypi.org/project/{{ package_name }}/)
+[![Docs](https://img.shields.io/badge/docs-{{ docs_url | replace('https://', '') | replace('-', '--') | replace('/', '%2F') }}-{{ docs_badge_color }})]({{ docs_url }})
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/{{ github_owner }}/{{ repository_name }}/actions/workflows/ci.yml)
+
+</div>
 
 [🇧🇷]({{ docs_url }}/pt-BR/) [🇲🇽]({{ docs_url }}/es/) [🇯🇵]({{ docs_url }}/ja/) [🇨🇳]({{ docs_url }}/zh/)
 
@@ -17,7 +26,7 @@ pip install {{ package_name }}
 For a persistent CLI install:
 
 ```sh
-pip install {{ package_name }}
+uv tool install {{ package_name }}   # or: pipx install {{ package_name }}
 ```
 {% endif %}
 
@@ -36,15 +45,15 @@ import {{ module_name }}
 
 Full documentation lives at [{{ docs_url }}]({{ docs_url }}).
 
-For LLM-assisted use, start with [`llms.txt`](llms.txt).
+For LLM-assisted use, start with [`llms.txt`]({{ docs_url }}/llms.txt).
 
 ## Development
 
-This project's dev environment is managed by [chefe](https://phvv.me/chefe).
+The dev environment is managed by [uv](https://docs.astral.sh/uv/).
 
-- Install: `chefe install`
-- Lint: `chefe run lint`
-- Typecheck: `chefe run typecheck`
-- Test: `chefe run test`
-- Docs: `chefe run docs`
-- Build: `python -m build`
+- Install: `uv sync --extra dev`
+- Lint: `uv run ruff check . && uv run ruff format --check .`
+- Typecheck: `uv run mypy src && uv run pyrefly check`
+- Test: `uv run pytest -q`
+- Docs: `uv run --extra docs mkdocs build -d site`
+- Build: `uv build`

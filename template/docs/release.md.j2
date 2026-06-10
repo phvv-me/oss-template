@@ -1,7 +1,7 @@
 # Release
 
 Releases are driven by the `version` in `pyproject.toml`. Bumping it and merging to
-`main` is the whole release: CI runs the gate, and if `v<version>` is not yet a tag,
+`main` is the whole release. CI runs the gate, and if `v<version>` is not yet a tag,
 the workflow builds, publishes to PyPI, tags the commit, and cuts a GitHub release.
 An unchanged version is a no-op, so ordinary commits never publish.
 
@@ -15,10 +15,10 @@ An unchanged version is a no-op, so ordinary commits never publish.
 
 ## Commands
 
-- Lint: `chefe run lint`
-- Typecheck: `chefe run typecheck`
-- Test: `chefe run test`
-- Build: `python -m build`
+- Lint: `uv run ruff check . && uv run ruff format --check .`
+- Typecheck: `uv run mypy src && uv run pyrefly check`
+- Test: `uv run pytest -q`
+- Build: `uv build`
 
 ## One-time setup
 

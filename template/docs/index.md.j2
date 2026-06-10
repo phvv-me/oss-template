@@ -29,5 +29,5 @@ pip install {{ package_name }}
 | `README.md` | user problem, install, first use |
 | `CHANGELOG.md` | release notes and user-visible changes |
 | `docs/` | durable documentation |
-| `llms.txt` | curated entry points for LLM-assisted use |
-| `.github/workflows/` | CI, docs deploy, and tag-based publish |
+| `docs/hooks/llms.py` | builds `llms.txt` into the docs site for LLM-assisted use |
+| `.github/workflows/` | CI, docs deploy, and version-driven publish |

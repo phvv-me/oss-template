@@ -1,9 +1,16 @@
+{% set gradients = {
+  'amber': {'light': '#fbbf24', 'dark': '#d97706'},
+  'blue': {'light': '#3b82f6', 'dark': '#1d4ed8'},
+  'teal': {'light': '#2dd4bf', 'dark': '#0f766e'},
+  'green': {'light': '#34d399', 'dark': '#047857'},
+} %}
+{% set gradient = gradients.get(accent_color, gradients['amber']) %}
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="{{ project_name }}">
   <title>{{ project_name }}</title>
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{% if accent_color == 'blue' %}#3b82f6{% else %}#fbbf24{% endif %}"/>
-      <stop offset="1" stop-color="{% if accent_color == 'blue' %}#1d4ed8{% else %}#d97706{% endif %}"/>
+      <stop offset="0" stop-color="{{ gradient['light'] }}"/>
+      <stop offset="1" stop-color="{{ gradient['dark'] }}"/>
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="15" fill="url(#brand)"/>

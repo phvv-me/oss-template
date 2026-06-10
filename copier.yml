@@ -13,12 +13,11 @@ _message_after_copy: |
 
   Next steps:
     1. cd into the project directory.
-    2. Install dependencies: chefe install
+    2. Install dependencies: uv sync --extra dev (commit the resulting uv.lock)
     3. Initialize git if needed: git init && git add -A && git commit -m "chore: initial commit"
     4. Create the GitHub repo {{ github_owner }}/{{ repository_name }} and push.
     5. Enable GitHub Pages (Settings -> Pages -> Source: GitHub Actions) to serve docs at {{ docs_url }}.
     6. Configure PyPI Trusted Publishing for the `pypi` environment so publish.yml can release without tokens.
-    7. Install hooks: pre-commit install
 
 project_name:
   type: str
@@ -72,11 +71,20 @@ license_spdx:
   type: str
   when: false
   default: Apache-2.0
+  choices:
+    - Apache-2.0
+    - MIT
+  validator: "{% if license_spdx not in ['Apache-2.0', 'MIT'] %}license_spdx must be Apache-2.0 or MIT{% endif %}"
+
+copyright_year:
+  type: str
+  when: false
+  default: "2026"
 
 min_python:
   type: str
   when: false
-  default: "3.13"
+  default: "3.14"
 
 accent_color:
   type: str
@@ -96,7 +104,7 @@ homepage_url:
 python_versions:
   type: str
   when: false
-  default: '"3.13", "3.14"'
+  default: '"3.14"'
 
 ci_os:
   type: str

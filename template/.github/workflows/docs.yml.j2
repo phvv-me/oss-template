@@ -1,11 +1,11 @@
 name: Docs
 
-# Deploys only after CI succeeds on main, so a failing CI never ships docs.
+# Deploys on main when docs change. The mkdocs build is the gate. (CI runs only
+# on pull_request and workflow_call, so a workflow_run trigger would never fire.)
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types: [completed]
+  push:
     branches: [main]
+    paths: ["docs/**", "mkdocs.yml", ".github/workflows/docs.yml", "README.md"]
   workflow_dispatch:
 
 permissions:
@@ -19,14 +19,11 @@ concurrency:
 
 jobs:
   build:
-    if: {{ "${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}" }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Install chefe
-        run: pip install chefe
-      - name: Build docs
-        run: chefe install && chefe run docs
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv run --extra docs mkdocs build -d site
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
