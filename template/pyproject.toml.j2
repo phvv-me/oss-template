@@ -46,6 +46,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "{{ min_python }}"
 strict = true
+disallow_any_explicit = true
 files = ["src"]
 
 [tool.pytest.ini_options]

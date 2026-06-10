@@ -17,7 +17,7 @@ pip install {{ package_name }}
 For a persistent CLI install:
 
 ```sh
-uv tool install {{ package_name }}
+pip install {{ package_name }}
 ```
 {% endif %}
 
@@ -47,4 +47,4 @@ This project's dev environment is managed by [chefe](https://phvv.me/chefe).
 - Typecheck: `chefe run typecheck`
 - Test: `chefe run test`
 - Docs: `chefe run docs`
-- Build: `uv build`
+- Build: `python -m build`
