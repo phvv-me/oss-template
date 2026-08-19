@@ -3,6 +3,7 @@ name: CI
 on:
   pull_request:
   workflow_call: # publish.yml runs this exact gate on main before publishing
+  workflow_dispatch: # manual runs (e.g. to validate main directly between releases)
 
 jobs:
   test:
@@ -14,10 +15,16 @@ jobs:
         python: [{{ python_versions }}]
     steps:
       - uses: actions/checkout@v6
+      # A published package stands on its own, so the bootstrap is the official uv action and
+      # nothing of ours. A shared house action would make every release depend on another
+      # repository's default branch, which is the coupling this file exists to avoid.
       - uses: astral-sh/setup-uv@v7
         with:
           python-version: {{ "${{ matrix.python }}" }}
           enable-cache: true
+      # One sync names every extra the gate needs. The `uv run` steps below reuse that
+      # environment and never prune it, so the extras stay installed for the whole job.
+      # Keep the matrix inside `requires-python`, since uv refuses an interpreter below it.
       - run: uv sync --extra dev
       - run: uv run ruff check .
       - run: uv run ruff format --check .
