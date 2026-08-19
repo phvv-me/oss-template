@@ -9,19 +9,19 @@ The template bakes one fixed toolchain (uv, ruff, pyrefly, mypy strict, pytest, 
 Create a new project:
 
 ```sh
-chefe x --with copier copier copy gh:phvv-me/oss-template my-project
+mainboard run -- copier copy gh:phvv-me/oss-template my-project
 ```
 
 Apply to an existing project:
 
 ```sh
-chefe x --with copier copier copy gh:phvv-me/oss-template .
+mainboard run -- copier copy gh:phvv-me/oss-template .
 ```
 
 Update later:
 
 ```sh
-chefe x --with copier copier update .
+mainboard run -- copier update .
 ```
 
 Copier stores answers in `.copier-answers.yml`, then uses them for future three-way updates.
@@ -36,5 +36,5 @@ Copier stores answers in `.copier-answers.yml`, then uses them for future three-
 ## Local Test
 
 ```sh
-chefe x --with copier copier copy packages/oss-template /tmp/example --defaults --data project_name=Example --data description="Example project" --data cli_command=example
+mainboard run -- copier copy packages/oss-template /tmp/example --defaults --data project_name=Example --data description="Example project" --data cli_command=example
 ```
