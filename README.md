@@ -2,7 +2,7 @@
 
 Reusable Copier template for small, public Python projects under `phvv-me`.
 
-The template bakes one fixed toolchain (uv, ruff, pyrefly, mypy strict, pytest, mkdocs-material) so every repo shares the same CI, docs, release, changelog, badges, CodeRabbit, Dependabot, and LLM-facing files. It is meant for projects like Maquina and Chefe, where the productization surface should stay almost identical.
+The template bakes one fixed toolchain (uv, ruff, pyrefly, mypy strict, pytest, mkdocs-material) so every repo shares the same CI, docs, release, changelog, badges, CodeRabbit, Dependabot, and LLM-facing files. It is meant for projects like Maquina and atpx, where the productization surface should stay almost identical.
 
 ## Use
 
